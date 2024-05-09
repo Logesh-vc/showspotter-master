@@ -1,0 +1,105 @@
+{% extends 'main/layout.html' %}
+
+{% load static %}
+
+{% block content %}
+
+{% if test %}
+<style>
+
+.btn-primary {
+        color: rgb(255, 255, 255);
+        background-color: rgb(7, 7, 218);
+        border-radius: 2rem;
+        width: 150px;
+        font-weight: 700;
+    }
+
+    .btn-danger {
+        font-weight: 700;
+        border-radius: 2rem;
+        width: 150px;
+    }
+
+    .btn-primary:hover {
+        color: rgb(0, 0, 0);
+        background-color: rgb(7, 7, 218);
+    }
+
+    button:focus {
+        outline: none !important;
+    }
+
+    h4 {
+        letter-spacing: 3px;
+        line-height : 32px;
+        font-size: 18px;
+    }
+
+
+
+</style>
+
+
+
+<div class="container">
+    <h1>Profile</h1><br>
+    <a href="{% url 'main:accounts-update' pk=user.id %}"><button class="btn btn-primary">Edit Profile</button></a>
+    <a href="{% url 'main:accounts-delete' pk=user.id %}"><button class="btn btn-danger">Delete Profile</button></a>
+</div>
+
+<div class="container" id="profile" style="margin-top: 40px;margin-bottom: 30px;">
+    <h4>User Name : <strong>{{ user.username }}</strong></h4>
+    <h4>First Name : <strong>{{ user.first_name }}</strong></h4>
+    <h4>Last Name : <strong>{{ user.last_name }}</strong></h4>
+    <h4>Email : <strong>{{ user.email }}</strong></h4>
+    <h4>Active Status : <strong>{{ user.is_active }}</strong></h4>
+    <h4>Date Joined : <strong>{{ user.date_joined }}</strong></h4>
+
+</div>
+
+
+<div class="container">
+    <h3><strong>Booked Tickets</strong></h3></br>
+        <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Created At</th>
+                    <th>Movie</th>
+                    <th>Theatre</th>
+                      <th>Screen</th>
+                      <th>Time</th>
+                    <th>Row No</th>
+                    <th>Col No</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for t in tickets_booked %}
+                  <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ t.created_at }}</td>
+                    <td>{{ t.show.movie.name }}</td>
+                    <td>{{ t.show.theatre.name }}</td>
+                    <td>{{ t.show.screen.name }}</td>
+                    <td>{{ t.show.time }}</td>
+                      <td>{{ t.row_num }}</td>
+                    <td>{{ t.col_num }}</td>
+                    <td><a href="{% url 'main:cancel_ticket' pk=t.id  %}"><button class="btn btn-danger" style="width:70px;"> <i class="fas fa-times-circle"></i></button></a></td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+</div>
+
+
+{% else %}
+
+<div class="container" style="margin-top : 30px;margin-bottom:60px;">
+    <img src="{% static 'image/404.png' %}" alt="404 page" class="img img-responsive center-block" />
+</div>
+
+{% endif %}
+
+{% endblock %}
